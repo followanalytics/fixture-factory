@@ -199,3 +199,9 @@ with contributions from several authors, including:
 ## License
 
 Fixture-Factory is released under the Apache 2.0 license. See the LICENSE file included with the distribution for details.
+
+### Running tests
+
+```
+JAVA_HOME=$(/usr/libexec/java_home -v 1.8) mvn verify
+```
