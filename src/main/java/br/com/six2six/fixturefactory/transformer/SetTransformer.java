@@ -1,7 +1,7 @@
 package br.com.six2six.fixturefactory.transformer;
 
-import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.EnumSet;
 import java.util.HashSet;
 import java.util.Set;
@@ -44,9 +44,10 @@ public class SetTransformer implements Transformer {
     @SuppressWarnings({ "rawtypes", "unchecked" })
     private <T> T transformToConcreteTarget(Object value, Class<T> type) {
         if (EnumSet.class.isAssignableFrom(type)) {
-            return type.cast(EnumSet.copyOf((Collection) value));
+            EnumSet copied = EnumSet.copyOf((Collection) value);
+            return type.cast(copied);
         } else {
-            return ReflectionUtils.newInstance(type, Arrays.asList((Collection) value));
+            return ReflectionUtils.newInstance(type, Collections.singletonList((Collection) value));
         }
     }
 }

@@ -1,34 +1,35 @@
 package br.com.six2six.fixturefactory;
 
-import static org.hamcrest.CoreMatchers.containsString;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
-
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
 
 import br.com.six2six.fixturefactory.base.Range;
 import br.com.six2six.fixturefactory.function.impl.IdentityFunction;
 import br.com.six2six.fixturefactory.function.impl.RandomFunction;
+import org.junit.Assert;
+import org.junit.Test;
 
 public class PropertyTest {
 
-    @Rule   
-    public ExpectedException expectedException = ExpectedException.none();
-    
     @Test
     public void shoudNotAllowNullName() {
-        expectedException.expect(IllegalArgumentException.class);
-        expectedException.expectMessage(containsString("name"));
-        new Property(null, null);
+        try {
+            new Property(null, null);
+        } catch (Exception e) {
+            Assert.assertTrue(e instanceof IllegalArgumentException);
+            Assert.assertTrue(e.getMessage().contains("name"));
+        }
     }
     
     @Test
     public void shoudNotAllowNullFunction() {
-        expectedException.expect(IllegalArgumentException.class);
-        expectedException.expectMessage(containsString("function"));
-        new Property("attr", null);
+        try {
+            new Property("attr", null);
+        } catch (Exception e) {
+            Assert.assertTrue(e instanceof IllegalArgumentException);
+            Assert.assertTrue(e.getMessage().contains("function"));
+        }
     }
     
     @Test
@@ -48,13 +49,13 @@ public class PropertyTest {
     @Test
     public void shouldReturnNullFromIdentityFunction() {
         Property property = new Property("attr", new IdentityFunction(null));
-        assertEquals(null, property.getValue());
+        assertNull(property.getValue());
     }
     
     @Test
     public void shouldReturnNull() {
         Property property = new Property("attr", (Object) null);
-        assertEquals(null, property.getValue());
+        assertNull(property.getValue());
     }
     
     @Test

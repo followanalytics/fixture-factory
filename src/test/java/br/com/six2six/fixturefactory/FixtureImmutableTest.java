@@ -1,21 +1,20 @@
 package br.com.six2six.fixturefactory;
 
 import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertThat;
-
-import org.hamcrest.CoreMatchers;
-import org.junit.BeforeClass;
-import org.junit.Test;
 
 import br.com.six2six.fixturefactory.loader.FixtureFactoryLoader;
 import br.com.six2six.fixturefactory.model.Child;
 import br.com.six2six.fixturefactory.model.Immutable;
 import br.com.six2six.fixturefactory.model.Route;
 import br.com.six2six.fixturefactory.model.RoutePlanner;
+import org.hamcrest.CoreMatchers;
+import org.hamcrest.core.CombinableMatcher;
+import org.junit.Assert;
+import org.junit.BeforeClass;
+import org.junit.Test;
 
 public class FixtureImmutableTest {
 
@@ -78,23 +77,25 @@ public class FixtureImmutableTest {
     @Test
     public void shouldWorkWhenChainingPropertiesUsingRelations() {
         RoutePlanner routePlanner = Fixture.from(RoutePlanner.class).gimme("chainedRoutePlanner");
-        assertThat(routePlanner.getRoute().getId().getValue(), CoreMatchers.<Long>either(equalTo(3L)).or(equalTo(4L)));
-        assertThat(routePlanner.getRoute().getId().getSeq(), CoreMatchers.<Long>either(equalTo(300L)).or(equalTo(400L)));
+        CombinableMatcher<Long> m1 = CoreMatchers.either(equalTo(3L)).or(equalTo(4L));
+        Assert.assertTrue(m1.matches(routePlanner.getRoute().getId().getValue()));
+        CombinableMatcher<Long> m2 = CoreMatchers.either(equalTo(300L)).or(equalTo(400L));
+        Assert.assertTrue(m2.matches(routePlanner.getRoute().getId().getSeq()));
         assertNotNull(routePlanner.getRoute().getCities().get(0).getName());
     }
 
     @Test
     public void shouldWorkWithInheritance() {
         Child child = Fixture.from(Child.class).gimme("valid");
-    	assertThat(child.getParentAttribute().getValue().length(), is(8));
-    	assertThat(child.getChildAttribute().length(), is(16));
+        Assert.assertEquals(8, child.getParentAttribute().getValue().length());
+    	Assert.assertEquals(16, child.getChildAttribute().length());
     }
     
     @Test
     public void shouldWorkWhenChainingInheritedProperty() {
         Child child = Fixture.from(Child.class).gimme("chained");
-        assertThat(child.getParentAttribute().getValue().length(), is(8));
-        assertThat(child.getChildAttribute().length(), is(16));
+        Assert.assertEquals(8, child.getParentAttribute().getValue().length());
+        Assert.assertEquals(16, child.getChildAttribute().length());
     }
     
     @Test
@@ -102,8 +103,8 @@ public class FixtureImmutableTest {
     	Immutable result = Fixture.from(Immutable.class).gimme("fullConstructor", new Rule() {{
     		add("address.street", "Rua do Nykolas");
     	}});
-    	
-    	assertThat(result.getAddress().getStreet(), equalTo("Rua do Nykolas"));
+
+    	Assert.assertEquals("Rua do Nykolas", result.getAddress().getStreet());
     }
     
 }
