@@ -1,35 +1,33 @@
 package br.com.six2six.fixturefactory.util;
 
-import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertThat;
-
-import org.junit.Test;
 
 import br.com.six2six.fixturefactory.model.Immutable;
 import br.com.six2six.fixturefactory.model.Owner;
 import br.com.six2six.fixturefactory.model.SimpleProposal;
+import org.junit.Assert;
+import org.junit.Test;
 
 public class ReflectionUtilsTest {
 
 	@Test
 	public void shouldFindDefaultConstructorForTopLevelClass() {
-		assertThat(ReflectionUtils.hasDefaultConstructor(Owner.class), is(true));
+        Assert.assertTrue(ReflectionUtils.hasDefaultConstructor(Owner.class));
 	}
 	
 	@Test
 	public void shouldFindDefaultConstructorForInnerClass() {
-		assertThat(ReflectionUtils.hasDefaultConstructor(Owner.Inner.class), is(true));
+        Assert.assertTrue(ReflectionUtils.hasDefaultConstructor(Owner.Inner.class));
 	}
 	
 	@Test
 	public void shouldntFindAnyDefaultConstructorForTopLevelClass() {
-		assertThat(ReflectionUtils.hasDefaultConstructor(Immutable.class), is(false));
+	    Assert.assertFalse(ReflectionUtils.hasDefaultConstructor(Immutable.class));
 	}
 	
 	@Test
 	public void shouldntFindDefaultConstructorForInnerClass() {
-		assertThat(ReflectionUtils.hasDefaultConstructor(Immutable.ImmutableInner.class), is(false));
+	    Assert.assertFalse(ReflectionUtils.hasDefaultConstructor(Immutable.ImmutableInner.class));
 	}
 	
 	@Test

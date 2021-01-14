@@ -1,20 +1,16 @@
 package br.com.six2six.fixturefactory.util;
 
 import br.com.six2six.fixturefactory.Property;
-
-import org.junit.Test;
-
 import java.util.LinkedHashSet;
 import java.util.Set;
-
-import static org.hamcrest.Matchers.contains;
-import static org.junit.Assert.assertThat;
+import org.junit.Assert;
+import org.junit.Test;
 
 public class PropertySorterTest {
 
     @SuppressWarnings("serial")
     @Test
-    public void shouldSortWithDependencies() throws Exception {
+    public void shouldSortWithDependencies() {
         final Property firstName = new Property("firstName", "diego");
         final Property lastName = new Property("lastName", "domingues");
         final Property email = new Property("email", "${firstName}.${lastName}@gmail.com");
@@ -27,12 +23,16 @@ public class PropertySorterTest {
             add(email);
         }}).sort();
 
-        assertThat(sortedProperties, contains(firstName, lastName, email, emailConfirm));
+
+        Assert.assertTrue(sortedProperties.contains(firstName));
+        Assert.assertTrue(sortedProperties.contains(lastName));
+        Assert.assertTrue(sortedProperties.contains(email));
+        Assert.assertTrue(sortedProperties.contains(emailConfirm));
     }
 
     @SuppressWarnings("serial")
     @Test(expected = IllegalArgumentException.class)
-    public void shouldThrowExceptionWhenThereIsCyclicDependency() throws Exception {
+    public void shouldThrowExceptionWhenThereIsCyclicDependency()  {
         final Property name = new Property("name", "diego");
         final Property email = new Property("email", "${name_confirmation}");
         final Property emailConfirm = new Property("emailConfirmation", "${email}");
